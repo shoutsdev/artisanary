@@ -13,7 +13,7 @@ class BlogRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'title'         => 'required|string|max:255|unique:blogs,title,'.$this->id,
+            'title'         => 'required|string|max:255|unique:blogs,title,'.$this->blog,
             'description'   => 'required'
         ];
 

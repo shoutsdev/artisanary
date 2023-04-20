@@ -13,10 +13,14 @@ class BlogObserver
     }
     public function created(Blog $blog): void
     {
-        $blog->unique_id = 'PR-'.$blog->id;
+        $blog->unique_id    = 'PR-'.$blog->id;
         $blog->save();
     }
 
+    public function updating(Blog $blog): void
+    {
+        $blog->slug = Str::slug($blog->title);
+    }
     public function updated(Blog $blog): void
     {
         //
@@ -24,7 +28,10 @@ class BlogObserver
 
     public function deleted(Blog $blog): void
     {
-        //
+        $image_path = public_path($blog->image);
+        if (file_exists($image_path)) {
+            unlink($image_path);
+        }
     }
 
     public function restored(Blog $blog): void

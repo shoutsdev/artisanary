@@ -33,15 +33,15 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-item">
-                    <a href="pages/gallery.html" class="nav-link">
+                    <a href="{{ route('dashboard') }}" class="nav-link">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
                             Dashboard
                         </p>
                     </a>
                 </li>
-                <li class="nav-item menu-open">
-                    <a href="#" class="nav-link active">
+                <li class="nav-item {{ request()->is('blogs*')  ? 'menu-open' : '' }}">
+                    <a href="#" class="nav-link {{ request()->is('blogs*')  ? 'active' : '' }}">
                         <i class="nav-icon fas fa-blog"></i>
                         <p>
                             Blog
@@ -50,26 +50,18 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="./index.html" class="nav-link active">
+                            <a href="{{ route('blogs.index') }}" class="nav-link {{ request()->is('blogs') || request()->is('blogs/*')  ? 'active' : '' }}">
                                 <i class="fa fa-list nav-icon"></i>
                                 <p>All Blogs</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="./index.html" class="nav-link">
+                            <a href="{{ route('blogs.create') }}" class="nav-link {{ request()->is('blogs/create')  ? 'active' : '' }}">
                                 <i class="fas fa-blog nav-icon"></i>
                                 <p>Create Blogs</p>
                             </a>
                         </li>
                     </ul>
-                </li>
-                <li class="nav-item">
-                    <a href="pages/gallery.html" class="nav-link">
-                        <i class="nav-icon fas fa-user"></i>
-                        <p>
-                            Roles
-                        </p>
-                    </a>
                 </li>
             </ul>
         </nav>

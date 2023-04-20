@@ -1,5 +1,7 @@
 @extends('backend.layouts.master')
+@section('title',__('Dashboard'))
 @section('content')
+    @include('layouts.alert')
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">

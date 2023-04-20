@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\BlogRequest;
 use App\Repositories\BlogRepository;
-use Illuminate\Http\Request;
 
 class BlogController extends Controller
 {
@@ -21,35 +20,53 @@ class BlogController extends Controller
             $data = [
                 'blogs' => $this->blogRepository->all()
             ];
-            return view('blogs.index', $data);
+            return view('backend.blogs.index', $data);
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', $e->getMessage());
+            return back()->with('error', $e->getMessage());
         }
     }
 
-    public function create()
+    public function create(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        //
+        return view('backend.blogs.form');
     }
     public function store(BlogRequest $request)
     {
-        //
+        try {
+            $this->blogRepository->store($request->all());
+            return redirect()->route('blogs.index')->with('success', 'Blog created successfully');
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', $e->getMessage());
+        }
     }
-    public function show(string $id)
+    public function edit(string $id): \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse
     {
-        //
+        try {
+            $data = [
+                'edit' => $this->blogRepository->find($id)
+            ];
+            return view('backend.blogs.form', $data);
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
     }
-    public function edit(string $id)
+    public function update(BlogRequest $request, $id): \Illuminate\Http\RedirectResponse
     {
-        //
-    }
-    public function update(BlogRequest $request, string $id)
-    {
-        //
+        try {
+            $this->blogRepository->update($id, $request->all());
+            return redirect()->route('blogs.index')->with('success', 'Blog updated successfully');
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', $e->getMessage());
+        }
     }
 
-    public function destroy(string $id)
+    public function destroy(string $id): \Illuminate\Http\RedirectResponse
     {
-        //
+        try {
+            $this->blogRepository->destroy($id);
+            return redirect()->route('blogs.index')->with('success', 'Blog deleted successfully');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
     }
 }
