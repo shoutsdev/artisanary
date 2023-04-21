@@ -59,8 +59,8 @@
                                             <label for="status">{{ __('Status') }}</label>
                                             <select name="status" id="status"
                                                     class="form-control text-capitalize">
-                                                <option value="1" {{ old('title',@$edit->title) == 1 ? 'selected' : '' }}>{{ __('Active') }}</option>
-                                                <option value="0" {{ old('title',@$edit->title) == 0 ? 'selected' : '' }}>{{ __('Inactive') }}</option>
+                                                <option value="1" {{ old('status',@$edit->status) == 1 ? 'selected' : '' }}>{{ __('Active') }}</option>
+                                                <option value="0" {{ old('status',@$edit->status) == 0 ? 'selected' : '' }}>{{ __('Inactive') }}</option>
                                             </select>
                                             <span class="text-danger error">{{ $errors->first('status') }}</span>
                                         </div>
