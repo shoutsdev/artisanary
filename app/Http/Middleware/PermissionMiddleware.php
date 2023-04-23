@@ -12,6 +12,10 @@ class PermissionMiddleware
     {
         if (auth()->check())
         {
+            if (auth()->user()->role_id == 1) {
+                return $next($request);
+            }
+
             $role = auth()->user()->role;
             $permissions = collect($role->permissions);
 

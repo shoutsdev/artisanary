@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserRequest;
 use App\Repositories\RoleRepository;
 use App\Repositories\UserRepository;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
@@ -61,10 +63,22 @@ class UserController extends Controller
 
     public function destroy($id): \Illuminate\Http\RedirectResponse
     {
+        DB::beginTransaction();
         try {
+            $user = $this->userRepository->find($id);
+
+            Mail::send('email.account_delete', [
+                'data' => $user
+            ], function ($message) use ($user) {
+                $message    ->to($user->email);
+                $message    ->subject('Account Deleted');
+            });
+
             $this->userRepository->destroy($id);
+            DB::commit();
             return back()->with('success', 'User deleted successfully');
         } catch (\Exception $e) {
+            DB::rollBack();
             return back()->with('error', $e->getMessage());
         }
     }
