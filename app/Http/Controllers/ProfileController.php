@@ -59,7 +59,7 @@ class ProfileController extends Controller
         return Redirect::to('/');
     }
 
-    public function socialLogin(Request $request)
+    public function socialLogin(Request $request): \Illuminate\Http\JsonResponse
     {
         try {
             $user = User::where('firebase_auth_id', $request->uid)->orWhere('email',$request->email)->first();
