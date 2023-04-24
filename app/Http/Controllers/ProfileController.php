@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -56,5 +57,34 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    public function socialLogin(Request $request)
+    {
+        try {
+            $user = User::where('firebase_auth_id', $request->uid)->orWhere('email',$request->email)->first();
+            if ($user) {
+                Auth::login($user);
+            } else {
+                $newUser = User::create([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'email_verified_at' => now(),
+                    'firebase_auth_id' => $request->uid,
+                    'password' => bcrypt('123456dummy'),
+                    'role_id' => '1'
+                ]);
+                Auth::login($newUser);
+            }
+            return response()->json([
+                'success' => 'User logged in successfully',
+                'user' => Auth::user(),
+                'route' => route('dashboard')
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage(),
+            ]);
+        }
     }
 }

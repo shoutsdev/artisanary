@@ -18,8 +18,9 @@
     <link rel="stylesheet" href="{{ asset('assets/backend/css/OverlayScrollbars.min.css') }}">
     <!-- summernote -->
     <link rel="stylesheet" href="{{ asset('assets/backend/css/summernote-bs4.min.css') }}">
+    @stack('css')
 </head>
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="hold-transition sidebar-mini layout-fixed {{ request()->routeIs('login') ? 'login-page' : '' }}">
 
 @yield('base.content')
 <script src="{{ asset('assets/backend/js/jquery.min.js') }}"></script>
