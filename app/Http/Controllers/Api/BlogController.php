@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BlogRequest;
+use App\Http\Resources\BlogResource;
 use App\Repositories\BlogRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -21,7 +22,7 @@ class BlogController extends Controller
     {
         try {
             $data = [
-                'blogs' => $this->blogRepository->all()
+                'blogs' => BlogResource::collection($this->blogRepository->all())
             ];
             return response()->json($data);
         } catch (\Exception $e) {
